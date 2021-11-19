@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .tip {
+      display: none;
+      position: relative;
+      width: 600px;
+      height: 400px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      background-color: aquamarine;
+
+    }
+
+    .top {
+      height: 50px;
+      line-height: 50px;
+      text-indent: 2em;
+      font-size: 25px;
+      width: 100%;
+      background-color: beige;
+    }
+
+    .top span {
+      margin-top: 5px;
+      display: block;
+      text-indent: 13px;
+      line-height: 40px;
+      width: 40px;
+      height: 40px;
+      float: right;
+      margin-right: 20px;
+      border: 2px solid black;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .content {
+      height: 300px;
+      text-align: center;
+      font-size: 19px;
+
+    }
+
+    .btns {
+      padding: 5px 10px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 50px;
+    }
+
+    .btns button {
+      margin-right: 20px;
+      float: right;
+      width: 60px;
+      height: 40px;
+    }
+
+    .login {
+      width: 100px;
+      background-color: rgb(164, 194, 252);
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button class="login">点击登录</button>
+  <script>
+    let loginBtn = document.querySelector('.login')
+    let Tip = (function () {
+      class Tip {
+        constructor() {
+          this.ele = document.createElement('div')
+          this.ele.className = 'tip'
+          document.body.appendChild(this.ele)
+          this.bindEvent()
+        }
+        setContent(txt) {
+          console.log('11 ')
+          // 这里本应该动态创建的
+          this.ele.innerHTML =
+            `<div class="top">
+          标题
+          <span class="close">X</span>
+        </div>
+        <div class="content">
+          <p>${txt}</p>
+        </div>
+        <div class="btns">
+          <button class='cancel'>取消</button>
+          <button class='ensure'>确定</button>
+        </div>
+        `
+          this.ele.style.display = 'block'
+        }
+        bindEvent() {
+          this.ele.addEventListener('click', e => {
+            // ie chrome 的一个兼容
+            e = e || window.event
+            const target = e.target || e.srcElement
+            if (target.className = 'close') {
+              this.ele.style.display = 'none'
+              return
+            }
+            if (target.className = 'cancel') {
+              console.log(true)
+              return this.ele.style.display = 'none'
+            }
+            if (target.className = 'ensure') {
+              console.log(false)
+              return this.ele.style.display = 'none'
+            }
+          })
+        }
+      }
+      // 单例模式核心代码
+      let instance = null
+      return function (txt) {
+        if (!instance) instance = new Tip()
+        instance.setContent(txt)
+        return instance
+      }
+    })();
+
+    let tip = new Tip()
+
+
+  </script>
+</body>
+
+</html>

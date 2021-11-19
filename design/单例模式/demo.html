@@ -1,0 +1,44 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .model {
+      width: 200px;
+      height: 200px;
+      border: 1px solid aqua;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loginBtn">点我</div>
+  <script>
+    var getSingle = function (fn) {
+      var result; //缓存实例
+      return function () {
+        return result || (result = fn.apply(this, arguments))
+      }
+    }
+    var createLoginLayer = function () {
+      var oDiv = document.createElement("div");
+      oDiv.innerHTML = "我是登录浮窗";
+      oDiv.className = "model";
+      oDiv.style.display = "none";
+      document.body.appendChild(oDiv);
+      return oDiv;
+    }
+    var createSingleLoginLayer = getSingle(createLoginLayer);
+    document.getElementById("loginBtn").onclick = function () {
+      //动态创建弹窗
+      //新建一个弹窗实例，内部使用单例模式管理，一直只能有一个.
+      var loginLayer = createSingleLoginLayer();
+      loginLayer.style.display = "block"
+    }
+  </script>
+</body>

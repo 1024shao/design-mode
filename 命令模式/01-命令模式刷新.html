@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button>点击刷新</button>
+  <script>
+    let btn = document.querySelector("button")
+
+    // 设置command 命令对象
+    function setCommand(invoker, receiver) {
+      invoker.onclick = receiver.refresh
+    }
+    // 设置receiver接收对象
+    function Receiver() {
+      // 刷新
+      return {
+        refresh() {
+          console.log('开始刷新')
+        }
+      }
+    }
+    // 发送命令
+    setCommand(btn, new Receiver())
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button>点击</button>
+  <script>
+    const Observe = (function () {
+      let _message = {}
+      //防止message被更改,内部保护起来
+      function on(type, fn) {
+        if (typeof _message[type] === 'undefined') { // 该消息已经被注册
+          _message[type] = [fn]
+        } else {  // 该消息未被注册,这里放到数组中,因为同一个类型的消息,可以注册多次
+          _message[type].push(fn)
+        }
+      }
+
+      function off(type) {
+        if (!_message[type]) return
+        _message[type] = 'undefined'
+      }
+
+      function subscribe(type, ...args) {
+        if (_message[type]) {
+          let len = _message[type].length
+          for (let i = 0; i < len; i++) {
+            _message[type][i].apply(this, args)
+          }
+        } else {
+          return;
+        }
+      }
+
+      return {
+        on,
+        off,
+        subscribe
+      }
+    })();
+    //订阅消息
+    Observe.on('say', function (data) {
+      console.log(data);
+    })
+    Observe.on('success', function () {
+      console.log('success')
+    });
+    document.querySelector("button").onclick = function () {
+      //发布消息
+      Observe.subscribe('say', { text: 'hello world' })
+      // Observe.subscribe('success');
+    }
+
+
+
+  </script>
+</body>
+
+</html>
